@@ -150,7 +150,8 @@ app.get('/qrCode.png', (req, res) => {
 function start(client) {
   qrCodeGenerated = false;
 
-  app.post("/send-message", async (req, res) => {
+  // app.post("/send-message", async (req, res) => {
+  app.post("/", async (req, res) => {
     const { to, message } = req.body;
     await client.sendText(to + '@c.us', message);
     res.json("Mensagem enviada com sucesso");
