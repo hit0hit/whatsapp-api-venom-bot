@@ -1,0 +1,19 @@
+{
+  "name": "api2",
+  "version": "1.0.0",
+  "description": "hi",
+  "main": "app.js",
+  "scripts": {
+    "start": "pm2 start ecosystem.config.js --env production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "base64-img": "^1.0.4",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "pm2": "^5.4.0",
+    "venom-bot": "github:orkestral/venom"
+  }
+}
