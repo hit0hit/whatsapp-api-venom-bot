@@ -3,7 +3,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const venom = require('venom-bot');
-// const pm2 = require('pm2');
+const pm2 = require('pm2');
 const cors = require('cors');
 
 const app = express();
@@ -89,44 +89,44 @@ function messageId(id) {
 }
 
 
-// const { exec } = require('child_process');
+const { exec } = require('child_process');
 
-// app.post('/reiniciar', (req, res) => {
-//   const { reiniciar } = req.body;
+app.post('/reiniciar', (req, res) => {
+  const { reiniciar } = req.body;
 
-//   if (reiniciar === 1) {
-//     pm2.connect((err) => {
-//       if (err) {
-//         console.error('Erro ao conectar ao PM2:', err);
-//         return res.status(500).json({ error: 'Erro ao conectar ao PM2' });
-//       }
+  if (reiniciar === 1) {
+    pm2.connect((err) => {
+      if (err) {
+        console.error('Erro ao conectar ao PM2:', err);
+        return res.status(500).json({ error: 'Erro ao conectar ao PM2' });
+      }
 
-//       pm2.flush((err, result) => {
-//         if (err) {
-//           console.error('Erro ao limpar os logs do PM2:', err);
-//           pm2.disconnect(); // Desconecta do PM2 em caso de erro
-//           return res.status(500).json({ error: 'Erro ao limpar os logs do PM2' });
-//         }
+      pm2.flush((err, result) => {
+        if (err) {
+          console.error('Erro ao limpar os logs do PM2:', err);
+          pm2.disconnect(); // Desconecta do PM2 em caso de erro
+          return res.status(500).json({ error: 'Erro ao limpar os logs do PM2' });
+        }
 
-//         console.log('Logs do PM2 foram limpos com sucesso:', result);
+        console.log('Logs do PM2 foram limpos com sucesso:', result);
 
-//         pm2.restart('app.js', (err, apps) => {
-//           pm2.disconnect(); // Desconecta do PM2 após reiniciar o aplicativo
+        pm2.restart('app.js', (err, apps) => {
+          pm2.disconnect(); // Desconecta do PM2 após reiniciar o aplicativo
 
-//           if (err) {
-//             console.error('Erro ao reiniciar o servidor:', err);
-//             return res.status(500).json({ error: 'Erro ao reiniciar o servidor' });
-//           }
+          if (err) {
+            console.error('Erro ao reiniciar o servidor:', err);
+            return res.status(500).json({ error: 'Erro ao reiniciar o servidor' });
+          }
 
-//           console.log('Servidor reiniciado com sucesso:', apps);
-//           return res.json({ message: 'Servidor reiniciado com sucesso' });
-//         });
-//       });
-//     });
-//   } else {
-//     return res.status(400).json({ error: 'Valor inválido para reiniciar' });
-//   }
-// });
+          console.log('Servidor reiniciado com sucesso:', apps);
+          return res.json({ message: 'Servidor reiniciado com sucesso' });
+        });
+      });
+    });
+  } else {
+    return res.status(400).json({ error: 'Valor inválido para reiniciar' });
+  }
+});
 
 app.get('/', (req, res) => {
   if (qrCodeGenerated) {
@@ -150,8 +150,7 @@ app.get('/qrCode.png', (req, res) => {
 function start(client) {
   qrCodeGenerated = false;
 
-  // app.post("/send-message", async (req, res) => {
-  app.post("/", async (req, res) => {
+  app.post("/send-message", async (req, res) => {
     const { to, message } = req.body;
     await client.sendText(to + '@c.us', message);
     res.json("Mensagem enviada com sucesso");
