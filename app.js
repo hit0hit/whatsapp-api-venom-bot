@@ -218,6 +218,7 @@ function start(client) {
 }
 
 server.on('listening', () => {
+  console.log('Servidor está ouvindo na porta ', server.address().port);
   startVenomBot();
 });
 

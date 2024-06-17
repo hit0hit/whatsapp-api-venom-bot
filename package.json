@@ -4,7 +4,7 @@
   "description": "hi",
   "main": "app.js",
   "scripts": {
-    "start": "pm2 start ecosystem.config.js --env production"
+    "start": "./app.js"
   },
   "keywords": [],
   "author": "",
